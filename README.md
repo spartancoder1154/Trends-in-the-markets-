@@ -1,69 +1,8 @@
--- 1. View the startups table to understand its structure
-SELECT *
-FROM startups;
+This SQL script analyzes key metrics from a startups database, providing insights into company valuations, funding, categories, and locations. It starts by exploring the structure of the table and calculating foundational statistics such as the total number of startups, total valuation, and highest amount raised. The queries then dive deeper to evaluate funding by stage (e.g., Seed), identify the oldest startup, and compute average valuations across categories—both raw and rounded values, ordered from highest to lowest. The script also investigates market competitiveness by counting the number of companies per category and highlighting those with more than three entries. Lastly, it compares startup sizes by location, including a filtered view for locations with larger average team sizes. This analysis offers a comprehensive overview for anyone researching startup trends or exploring investment opportunities.
 
--- (How many columns? This depends on the result of the above query)
 
--- 2. Total number of companies in the table
-SELECT COUNT(*) AS total_companies
-FROM startups;
 
--- 3. Total value of all companies (sum of valuations)
-SELECT SUM(valuation) AS total_valuation
-FROM startups;
 
--- 4. Highest amount raised by any startup
-SELECT MAX(raised) AS highest_raised
-FROM startups;
 
--- 5. Highest amount raised during the 'Seed' stage
-SELECT MAX(raised) AS highest_seed_raised
-FROM startups
-WHERE stage = 'Seed';
 
--- 6. Year the oldest company was founded
-SELECT MIN(founded_year) AS oldest_founded_year
-FROM startups;
-
--- 7. Average valuation across all startups
-SELECT AVG(valuation) AS average_valuation
-FROM startups;
-
--- 8. Average valuation in each category
-SELECT category, AVG(valuation) AS average_valuation
-FROM startups
-GROUP BY category;
-
--- 9. Average valuation in each category, rounded to 2 decimals
-SELECT category, ROUND(AVG(valuation), 2) AS avg_valuation_rounded
-FROM startups
-GROUP BY category;
-
--- 10. Same as above, but sorted from highest to lowest average
-SELECT category, ROUND(AVG(valuation), 2) AS avg_valuation_rounded
-FROM startups
-GROUP BY category
-ORDER BY avg_valuation_rounded DESC;
-
--- 11. Total number of companies per category
-SELECT category, COUNT(*) AS company_count
-FROM startups
-GROUP BY category;
-
--- 12. Filtered to categories with more than 3 companies
-SELECT category, COUNT(*) AS company_count
-FROM startups
-GROUP BY category
-HAVING COUNT(*) > 3;
-
--- 13. Average size of startups per location
-SELECT location, AVG(size) AS average_size
-FROM startups
-GROUP BY location;
-
--- 14. Average size of startups per location, filtered to only averages > 500
-SELECT location, AVG(size) AS average_size
-FROM startups
-GROUP BY location
-HAVING AVG(size) > 500;
 
